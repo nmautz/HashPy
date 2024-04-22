@@ -36,14 +36,14 @@ def save_hashes(hashes, filename):
     """This function saves the hashes to a CSV file"""
     with open(filename, 'w') as f:
         for filepath, filehash in hashes.items():
-            f.write(f"{filepath},{filehash}\n")
+            f.write(f"{filepath}::::{filehash}\n")
 
 def load_hashes(filename):
     """This function loads hashes from a CSV file"""
     hashes = {}
     with open(filename, 'r') as f:
         for line in f:
-            filepath, filehash = line.strip().split(',')
+            filepath, filehash = line.strip().split('::::')
             hashes[filepath] = filehash
     return hashes
 
