@@ -28,6 +28,11 @@ def hash_file(filename):
 def hash_directory(directory):
     """This function hashes all files in a directory and saves the results to a CSV file"""
     hashes = {}
+    #check if file instead of dir
+    if os.path.isfile(directory):
+        hashes[directory] = hash_file(directory)
+        return hashes
+    
     for root, dirs, files in os.walk(directory):
         for filename in files:
             filepath = os.path.join(root, filename)
