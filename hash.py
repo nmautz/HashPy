@@ -5,6 +5,9 @@ import hashlib
 import os
 import sys
 
+CURRENT_VERSION = "0.1"
+SUPPORTED_VERSIONS = [CURRENT_VERSION]
+
 def hash_file(filename):
     """This function returns the SHA-1 hash of the file passed into it"""
     # make a hash object
@@ -35,6 +38,9 @@ def hash_directory(directory):
 def save_hashes(hashes, filename):
     """This function saves the hashes to a CSV file"""
     with open(filename, 'w') as f:
+        # Write the version number to the file
+        f.write(f"{CURRENT_VERSION}\n")
+
         for filepath, filehash in hashes.items():
             f.write(f"{filepath}::::{filehash}\n")
 
@@ -42,6 +48,13 @@ def load_hashes(filename):
     """This function loads hashes from a CSV file"""
     hashes = {}
     with open(filename, 'r') as f:
+        # read first line to get version number
+        version_str = f.readline()
+        version_str = version_str.strip()
+        if not version_str in SUPPORTED_VERSIONS:
+            print(f"Unsupported version: {version_str}")
+            print(f"Supported versions: {SUPPORTED_VERSIONS}")
+            exit(1)
         for line in f:
             filepath, filehash = line.strip().split('::::')
             hashes[filepath] = filehash
