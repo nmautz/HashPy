@@ -107,10 +107,11 @@ def recheck_hashes(directory, original_hashes):
         elif file_details is None:
             print(f"File {filepath} is deleted.")
         else:
-            file_size = file_details[0]
-            modified_date = file_details[1]
+            file_size = str(file_details[0])
+            modified_date = str(file_details[1])
             original_file_size = original_file_details[1]
             original_modified_date = original_file_details[2]
+
             if file_size == original_file_size and modified_date == original_modified_date:
                 file_hash = hash_file(filepath)
                 original_file_hash = original_file_details[0]
