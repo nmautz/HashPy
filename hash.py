@@ -18,8 +18,8 @@ def hash_file(filename):
         # loop till the end of the file
         chunk = 0
         while chunk != b'':
-            # read only 1024 bytes at a time
-            chunk = file.read(1024)
+            # read only 10 mb at a time
+            chunk = file.read(10000000)
             h.update(chunk)
 
     # return the hex representation of digest
