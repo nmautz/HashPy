@@ -13,6 +13,7 @@ def hash_file(filename):
     # make a hash object
     h = hashlib.sha1()
 
+
     # open file for reading in binary mode
     with open(filename, 'rb') as file:
         # loop till the end of the file
@@ -129,7 +130,6 @@ def recheck_hashes(directory, original_hashes):
 
             if file_size == original_file_size and modified_date == original_modified_date:
                 file_size_human_readable = format_file_size(file_size)
-                print(f"Hashing file of size: {file_size_human_readable}")
                 file_hash = hash_file(filepath)
                 original_file_hash = original_file_details[0]
                 if original_file_hash == file_hash:
