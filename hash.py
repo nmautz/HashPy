@@ -128,7 +128,7 @@ def recheck_hashes(directory, original_hashes):
             original_file_size = original_file_details[1]
             original_modified_date = original_file_details[2]
 
-            if file_size == original_file_size and modified_date == original_modified_date:
+            if file_size == original_file_size and modified_date == original_modified_date or (file_size != None and modified_date != None):
                 file_size_human_readable = format_file_size(file_size)
                 file_hash = hash_file(filepath)
                 original_file_hash = original_file_details[0]
