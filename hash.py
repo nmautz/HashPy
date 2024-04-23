@@ -80,11 +80,9 @@ def recheck_hashes(directory, original_hashes):
             num_unchanged +=1
     print(f"{num_unchanged} files unchanged")
 
-save_load = int(sys.argv[1])
-directory = sys.argv[2]
-hashes_file = sys.argv[3]
-# Hash all files in the directory and save the results
-hashes = hash_directory(directory)
 
-cProfile.run('save_hashes(hashes, hashes_file)')
+directory = sys.argv[1]
+
+# Hash all files in the directory and save the results
+cProfile.run('hashes = hash_directory(directory)')
 
