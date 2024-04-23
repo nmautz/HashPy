@@ -6,7 +6,7 @@ import os
 import sys
 
 CURRENT_VERSION = "0.2"
-SUPPORTED_VERSIONS = [CURRENT_VERSION]
+SUPPORTED_VERSIONS = [CURRENT_VERSION, "0.1"]
 
 def hash_file(filename):
     """This function returns the SHA-1 hash of the file passed into it"""
@@ -92,7 +92,11 @@ def load_hashes(filename):
             print(f"Supported versions: {SUPPORTED_VERSIONS}")
             exit(1)
         for line in f:
-            filepath, filehash,file_size,modified_date = line.strip().split('::::')
+            split_line = line.strip().split('::::')
+            filepath = split_line[0]
+            filehash = split_line[1]
+            file_size = split_line[2] if len(split_line) > 2 else None
+            modified_date = split_line[3] if len(split_line) > 3 else None
             hashes[filepath] = [filehash,file_size,modified_date]
     return hashes
 
