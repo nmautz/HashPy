@@ -58,7 +58,7 @@ def save_hashes(hashes, filename):
             filehash = file_details[0]
             file_size = file_details[1]
             modified_date = file_details[2]
-            f.write(f"{filepath},{filehash},{file_size},{modified_date}\n")
+            f.write(f"{filepath}::::{filehash}::::{file_size}::::{modified_date}\n")
 
 def load_hashes(filename):
     """This function loads hashes from a CSV file"""
