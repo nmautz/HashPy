@@ -28,9 +28,13 @@ def hash_file(filename):
 
 def get_file_details(filepath):
     filehash = hash_file(filepath)
+    file_size,modified_date = get_shallow_file_details(filepath)
+    return filehash, file_size, modified_date
+
+def get_shallow_file_details(filepath):
     file_size = os.path.getsize(filepath)
     modified_date = os.path.getmtime(filepath)
-    return filehash, file_size, modified_date
+    return file_size, modified_date
 
 def hash_directory(directory):
     """This function hashes all files in a directory and saves the results to a CSV file"""
@@ -72,8 +76,8 @@ def load_hashes(filename):
             print(f"Supported versions: {SUPPORTED_VERSIONS}")
             exit(1)
         for line in f:
-            filepath, filehash = line.strip().split('::::')
-            hashes[filepath] = filehash
+            filepath, filehash,file_size,modified_date = line.strip().split('::::')
+            hashes[filepath] = [filehash,file_size,modified_date]
     return hashes
 
 def recheck_hashes(directory, original_hashes):
