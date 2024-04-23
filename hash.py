@@ -91,6 +91,8 @@ def load_hashes(filename):
             print(f"Unsupported version: {version_str}")
             print(f"Supported versions: {SUPPORTED_VERSIONS}")
             exit(1)
+        elif not version_str == CURRENT_VERSION:
+            print(f"Warning: Hash version {version_str} is not the current version ({CURRENT_VERSION}). Latest features unavailible")
         for line in f:
             split_line = line.strip().split('::::')
             filepath = split_line[0]
