@@ -28,10 +28,10 @@ def hash_file(filename):
 
 def get_file_details(filepath):
     filehash = hash_file(filepath)
-    file_size,modified_date = get_shallow_file_details(filepath)
+    file_size,modified_date = get_quick_file_details(filepath)
     return filehash, file_size, modified_date
 
-def get_shallow_file_details(filepath):
+def get_quick_file_details(filepath):
     file_size = os.path.getsize(filepath)
     modified_date = os.path.getmtime(filepath)
     return file_size, modified_date
