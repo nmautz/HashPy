@@ -4,6 +4,7 @@
 import hashlib
 import os
 import sys
+import cProfile
 
 CURRENT_VERSION = "0.1"
 SUPPORTED_VERSIONS = [CURRENT_VERSION]
@@ -82,13 +83,8 @@ def recheck_hashes(directory, original_hashes):
 save_load = int(sys.argv[1])
 directory = sys.argv[2]
 hashes_file = sys.argv[3]
-if save_load == 0:
+# Hash all files in the directory and save the results
+hashes = hash_directory(directory)
 
-    # Hash all files in the directory and save the results
-    hashes = hash_directory(directory)
-    save_hashes(hashes, hashes_file)
-else:
+cProfile.run('save_hashes(hashes, hashes_file)')
 
-    # Load the original hashes and recheck
-    original_hashes = load_hashes(hashes_file)
-    recheck_hashes(directory, original_hashes)
