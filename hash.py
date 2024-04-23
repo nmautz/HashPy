@@ -5,7 +5,7 @@ import hashlib
 import os
 import sys
 
-CURRENT_VERSION = "0.1"
+CURRENT_VERSION = "0.2"
 SUPPORTED_VERSIONS = [CURRENT_VERSION]
 
 def hash_file(filename):
@@ -25,19 +25,27 @@ def hash_file(filename):
     # return the hex representation of digest
     return h.hexdigest()
 
+
+def get_file_details(filepath):
+    filehash = hash_file(filepath)
+    file_size = os.path.getsize(filepath)
+    modified_date = os.path.getmtime(filepath)
+    return filehash, file_size, modified_date
+
 def hash_directory(directory):
     """This function hashes all files in a directory and saves the results to a CSV file"""
     hashes = {}
     #check if file instead of dir
     if os.path.isfile(directory):
-        hashes[directory] = hash_file(directory)
+        filehash,file_size,modified_date = get_file_details(directory)
+        hashes[directory] = [filehash, file_size, modified_date]
         return hashes
     
     for root, dirs, files in os.walk(directory):
         for filename in files:
             filepath = os.path.join(root, filename)
-            filehash = hash_file(filepath)
-            hashes[filepath] = filehash
+            filehash,file_size,modified_date = get_file_details(filepath)
+            hashes[filepath] = [filehash, file_size, modified_date]
     return hashes
 
 def save_hashes(hashes, filename):
@@ -46,8 +54,11 @@ def save_hashes(hashes, filename):
         # Write the version number to the file
         f.write(f"{CURRENT_VERSION}\n")
 
-        for filepath, filehash in hashes.items():
-            f.write(f"{filepath}::::{filehash}\n")
+        for filepath, file_details in hashes.items():
+            filehash = file_details[0]
+            file_size = file_details[1]
+            modified_date = file_details[2]
+            f.write(f"{filepath},{filehash},{file_size},{modified_date}\n")
 
 def load_hashes(filename):
     """This function loads hashes from a CSV file"""
