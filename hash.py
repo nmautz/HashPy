@@ -96,6 +96,15 @@ def load_hashes(filename):
             hashes[filepath] = [filehash,file_size,modified_date]
     return hashes
 
+def format_file_size(size_in_bytes):
+    size_in_bytes = float(size_in_bytes)
+    units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+    unit_index = 0
+    while size_in_bytes >= 1024 and unit_index < len(units) - 1:
+        size_in_bytes /= 1024
+        unit_index += 1
+    return "{:.2f} {}".format(size_in_bytes, units[unit_index])
+
 def recheck_hashes(directory, original_hashes):
     """This function rechecks the hashes of files in a directory against the original hashes"""
     num_unchanged = 0
@@ -113,6 +122,8 @@ def recheck_hashes(directory, original_hashes):
             original_modified_date = original_file_details[2]
 
             if file_size == original_file_size and modified_date == original_modified_date:
+                file_size_human_readable = format_file_size(file_size)
+                print(f"Hashing file of size: {file_size_human_readable}")
                 file_hash = hash_file(filepath)
                 original_file_hash = original_file_details[0]
                 if original_file_hash == file_hash:
