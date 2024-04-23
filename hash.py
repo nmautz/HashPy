@@ -36,6 +36,22 @@ def get_quick_file_details(filepath):
     modified_date = os.path.getmtime(filepath)
     return file_size, modified_date
 
+def get_quick_directory_details(directory):
+    """This function hashes all files in a directory and saves the results to a CSV file"""
+    hashes = {}
+    #check if file instead of dir
+    if os.path.isfile(directory):
+        file_size,modified_date = get_quick_file_details(directory)
+        hashes[directory] = [file_size, modified_date]
+        return hashes
+    
+    for root, dirs, files in os.walk(directory):
+        for filename in files:
+            filepath = os.path.join(root, filename)
+            file_size,modified_date = get_quick_file_details(filepath)
+            hashes[filepath] = [file_size, modified_date]
+    return hashes
+
 def hash_directory(directory):
     """This function hashes all files in a directory and saves the results to a CSV file"""
     hashes = {}
@@ -83,15 +99,28 @@ def load_hashes(filename):
 def recheck_hashes(directory, original_hashes):
     """This function rechecks the hashes of files in a directory against the original hashes"""
     num_unchanged = 0
-    current_hashes = hash_directory(directory)
-    for filepath, filehash in current_hashes.items():
-        original_hash = original_hashes.get(filepath)
-        if original_hash is None:
+    current_hashes = get_quick_directory_details(directory)
+    for filepath, file_details in current_hashes.items():
+        original_file_details = original_hashes.get(filepath)
+        if original_file_details is None:
             print(f"File {filepath} is new or moved.")
-        elif filehash != original_hash:
-            print(f"File {filepath} has been modified.")
+        elif file_details is None:
+            print(f"File {filepath} is deleted.")
         else:
-            num_unchanged +=1
+            file_size = file_details[0]
+            modified_date = file_details[1]
+            original_file_size = original_file_details[1]
+            original_modified_date = original_file_details[2]
+            if file_size == original_file_size and modified_date == original_modified_date:
+                file_hash = hash_file(filepath)
+                original_file_hash = original_file_details[0]
+                if original_file_hash == file_hash:
+                    num_unchanged += 1
+                else:
+                    print(f"File {filepath} has changed.")
+            else:
+                print(f"File {filepath} has changed.")
+
     print(f"{num_unchanged} files unchanged")
 
 save_load = int(sys.argv[1])
