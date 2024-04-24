@@ -1,3 +1,4 @@
 env
 *.hash
 .DS_Store
+*.ignoreme
