@@ -112,7 +112,29 @@ def format_file_size(size_in_bytes):
         unit_index += 1
     return "{:.2f} {}".format(size_in_bytes, units[unit_index])
 
-def recheck_hashes(directory, original_hashes):
+def reckech_hashes(directory, original_hashes):
+    """This function rechecks the hashes of files in a directory against the original hashes"""
+    num_unchanged = 0
+    current_hashes = hash_directory(directory)
+    for filepath, file_details in current_hashes.items():
+        original_file_details = original_hashes.get(filepath)
+        if original_file_details is None:
+            print(f"File {filepath} is new or moved.")
+        elif file_details is None:
+            print(f"File {filepath} is deleted.")
+        else:
+            filehash = file_details[0]
+            original_filehash = original_file_details[0]
+
+            if filehash == original_filehash:
+                num_unchanged += 1
+            else:
+                print(f"File {filepath} has changed.")
+
+
+    print(f"{num_unchanged} files unchanged")
+
+def quick_recheck_hashes(directory, original_hashes):
     """This function rechecks the hashes of files in a directory against the original hashes"""
     num_unchanged = 0
     current_hashes = get_quick_directory_details(directory)
@@ -144,6 +166,13 @@ def recheck_hashes(directory, original_hashes):
 save_load = int(sys.argv[1])
 directory = sys.argv[2]
 hashes_file = sys.argv[3]
+if save_load == 1:
+    try:
+        quick_search = int(sys.argv[4])
+    except:
+        print("Quick search not specified, defaulting to 0 (Off)")
+        quick_search = 0
+
 if save_load == 0:
 
     # Hash all files in the directory and save the results
@@ -153,4 +182,8 @@ else:
 
     # Load the original hashes and recheck
     original_hashes = load_hashes(hashes_file)
-    recheck_hashes(directory, original_hashes)
+    if quick_search == 1:
+        quick_recheck_hashes(directory, original_hashes)
+    else:
+        print("fart")
+        reckech_hashes(directory, original_hashes)
