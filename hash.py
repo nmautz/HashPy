@@ -115,13 +115,16 @@ def format_file_size(size_in_bytes):
 def reckech_hashes(directory, original_hashes):
     """This function rechecks the hashes of files in a directory against the original hashes"""
     num_unchanged = 0
+    changed_files = []
     current_hashes = hash_directory(directory)
     for filepath, file_details in current_hashes.items():
         original_file_details = original_hashes.get(filepath)
         if original_file_details is None:
             print(f"File {filepath} is new or moved.")
+            changed_files.append(filepath)
         elif file_details is None:
             print(f"File {filepath} is deleted.")
+            changed_files.append(filepath)
         else:
             filehash = file_details[0]
             original_filehash = original_file_details[0]
@@ -130,20 +133,25 @@ def reckech_hashes(directory, original_hashes):
                 num_unchanged += 1
             else:
                 print(f"File {filepath} has changed.")
+                changed_files.append(filepath)
 
 
     print(f"{num_unchanged} files unchanged")
+    return changed_files
 
 def quick_recheck_hashes(directory, original_hashes):
     """This function rechecks the hashes of files in a directory against the original hashes"""
     num_unchanged = 0
     current_hashes = get_quick_directory_details(directory)
+    changed_files = []
     for filepath, file_details in current_hashes.items():
         original_file_details = original_hashes.get(filepath)
         if original_file_details is None:
             print(f"File {filepath} is new or moved.")
+            changed_files.append(filepath)
         elif file_details is None:
             print(f"File {filepath} is deleted.")
+            changed_files.append(filepath)
         else:
             file_size = str(file_details[0])
             modified_date = str(file_details[1])
@@ -158,10 +166,13 @@ def quick_recheck_hashes(directory, original_hashes):
                     num_unchanged += 1
                 else:
                     print(f"File {filepath} has changed.")
+                    changed_files.append(filepath)
             else:
                 print(f"File {filepath} has changed.")
+                changed_files.append(filepath)
 
     print(f"{num_unchanged} files unchanged")
+    return changed_files
 
 save_load = int(sys.argv[1])
 directory = sys.argv[2]
@@ -187,7 +198,9 @@ elif save_load == 1:
     else:
         reckech_hashes(directory, original_hashes)
 elif save_load == 2:
-    print("TODO")
+    # check hashes and update only changed values
+    original_hashes = load_hashes(hashes_file)
+
 else:
     print("Invalid save/load option")
     exit(1)
