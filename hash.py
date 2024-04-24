@@ -200,6 +200,18 @@ elif save_load == 1:
 elif save_load == 2:
     # check hashes and update only changed values
     original_hashes = load_hashes(hashes_file)
+    changed_file_paths = reckech_hashes(directory, original_hashes)
+    for filepath in changed_file_paths:
+        if not os.path.exists(filepath):
+            # File {filepath} is deleted
+            original_hashes.pop(filepath)
+        else:
+            # File {filepath} has changed or is new or moved.
+            filehash, file_size, modified_date = get_file_details(filepath)
+            original_hashes[filepath] = [filehash, file_size, modified_date]
+
+    save_hashes(original_hashes, hashes_file)
+
 
 else:
     print("Invalid save/load option")
