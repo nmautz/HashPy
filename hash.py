@@ -185,5 +185,4 @@ else:
     if quick_search == 1:
         quick_recheck_hashes(directory, original_hashes)
     else:
-        print("fart")
         reckech_hashes(directory, original_hashes)
