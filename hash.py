@@ -188,3 +188,6 @@ elif save_load == 1:
         reckech_hashes(directory, original_hashes)
 elif save_load == 2:
     print("TODO")
+else:
+    print("Invalid save/load option")
+    exit(1)
