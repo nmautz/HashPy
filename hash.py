@@ -209,7 +209,7 @@ elif save_load == 2:
             # File {filepath} has changed or is new or moved.
             filehash, file_size, modified_date = get_file_details(filepath)
             original_hashes[filepath] = [filehash, file_size, modified_date]
-
+    print(f"Saving {len(changed_file_paths)} changed hashes...")
     save_hashes(original_hashes, hashes_file)
 
 
