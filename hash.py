@@ -4,6 +4,7 @@
 import hashlib
 import os
 import sys
+import time
 
 CURRENT_VERSION = "0.2"
 SUPPORTED_VERSIONS = [CURRENT_VERSION, "0.1"]
@@ -179,6 +180,9 @@ def quick_recheck_hashes(directory, original_hashes):
 save_load = int(sys.argv[1])
 directory = sys.argv[2]
 hashes_file = sys.argv[3]
+
+start_time = time.time()
+
 if save_load == 1:
     try:
         quick_search = int(sys.argv[4])
@@ -218,3 +222,13 @@ elif save_load == 2:
 else:
     print("Invalid save/load option")
     exit(1)
+
+
+def format_time(time):
+    return f"{time:.2f}s"
+
+end_time = time.time()
+
+time_elapsed = end_time - start_time
+formated_time_e = format_time(time_elapsed)
+print(f"Time elapsed: {formated_time_e}")
