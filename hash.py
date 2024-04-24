@@ -15,8 +15,7 @@ def hash_file(filename):
     # make a hash object
     h = hashlib.sha1()
 
-    if save_load == 0:
-        print(f"Hashing file of size {format_file_size(os.path.getsize(filename))}")
+    print(f"Hashing file of size {format_file_size(os.path.getsize(filename))}")
 
     # open file for reading in binary mode
     with open(filename, 'rb') as file:
