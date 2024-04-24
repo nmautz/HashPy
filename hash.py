@@ -178,12 +178,13 @@ if save_load == 0:
     # Hash all files in the directory and save the results
     hashes = hash_directory(directory)
     save_hashes(hashes, hashes_file)
-else:
+elif save_load == 1:
 
     # Load the original hashes and recheck
     original_hashes = load_hashes(hashes_file)
     if quick_search == 1:
         quick_recheck_hashes(directory, original_hashes)
     else:
-        print("fart")
         reckech_hashes(directory, original_hashes)
+elif save_load == 2:
+    print("TODO")
