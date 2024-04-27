@@ -202,7 +202,7 @@ except:
     print("           3 - Search for a specific hash(s) from a file")
     print("           4 - Search for specific file in directory")
     print("Usage: python hash.py <save_load> <directory> <hashes_file>")
-
+    exit(1)
 
 start_time = time.time()
 
