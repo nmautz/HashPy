@@ -190,9 +190,19 @@ def quick_recheck_hashes(directory, original_hashes):
     print(f"{num_unchanged} files unchanged")
     return changed_files
 
-save_load = int(sys.argv[1])
-directory = sys.argv[2]
-hashes_file = sys.argv[3]
+try:
+
+    save_load = int(sys.argv[1])
+    directory = sys.argv[2]
+    hashes_file = sys.argv[3]
+except:
+    print("save_load: 0 - Hash all files in the directory and save the results")
+    print("           1 - Load the original hashes and recheck")
+    print("           2 - check hashes and update only changed values")
+    print("           3 - Search for a specific hash(s) from a file")
+    print("           4 - Search for specific file in directory")
+    print("Usage: python hash.py <save_load> <directory> <hashes_file>")
+
 
 start_time = time.time()
 
