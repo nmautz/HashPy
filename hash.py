@@ -79,10 +79,10 @@ def find_file(file_hash, file_size, target_dir_path):
         for filename in files:
             filepath = os.path.join(root, filename)
             target_filesize = str(os.path.getsize(filepath))
-            if target_filesize == file_size:
-                filehash = hash_file(filepath)
-                if filehash == file_hash:
-                    return filepath
+            #if target_filesize == file_size:
+            filehash = hash_file(filepath)
+            if filehash == file_hash:
+                return filepath
     return None
 
 def save_hashes(hashes, filename):
