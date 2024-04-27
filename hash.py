@@ -73,14 +73,16 @@ def hash_directory(directory):
     return hashes
 
 
-def find_file(file_hash, target_dir_path):
+def find_file(file_hash, file_size, target_dir_path):
     """This function finds a file in a directory by its hash"""
     for root, dirs, files in os.walk(target_dir_path):
         for filename in files:
             filepath = os.path.join(root, filename)
-            filehash = hash_file(filepath)
-            if filehash == file_hash:
-                return filepath
+            target_filesize = str(os.path.getsize(filepath))
+            if target_filesize == file_size:
+                filehash = hash_file(filepath)
+                if filehash == file_hash:
+                    return filepath
     return None
 
 def save_hashes(hashes, filename):
@@ -237,18 +239,18 @@ elif save_load == 3:
     file_hashs = file_hashs.values()
     for file_obj in file_hashs:
         file_hash = file_obj[0]
-        filepath = find_file(file_hash, target_dir_path)
+        file_size = file_obj[1]
+        filepath = find_file(file_hash, file_size, target_dir_path)
         if filepath is not None:
             print(f"File found at {filepath}")
-        else:
-            print("File not found")
 
 elif save_load == 4:
     # Search for a matching file
     file_path = directory
     target_dir_path = hashes_file
     file_hash = hash_file(file_path)
-    filepath = find_file(file_hash, target_dir_path)
+    file_size = os.path.getsize(file_path)
+    filepath = find_file(file_hash, file_size, target_dir_path)
     if filepath is not None:
         print(f"File found at {filepath}")
     else:
